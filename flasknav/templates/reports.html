@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Customer - Reports</title>
+    </head>
+	<body>
+		{% include 'header.html' %}
+		<h2>Reports</h2>
+		<br>
+		Select a Report:
+		<form action = "/reports" method="POST">
+			<table>
+			  <tr>
+				<td>
+					<select name="report">
+						<option value="1">All Students - Sorted by Customer Last Name, First Name</option>
+						<option value="2">All Students - Sorted by Current Total Sales Decreasing</option>
+						<option value="3">Three Random Customers - Promotional Giveaway (Not Repeating)</option>
+					</select>
+			  </tr>
+			</table>
+			<p><input type="submit" value="Run Report" /> <input type="reset" value="Reset"></p>
+		</form>
+		{% if source == 'POST' %}
+			{% if result[0:5] == 'error' %}
+				<h3>ERROR</h3>
+				{{ result }}
+				<br>
+			{% else %}
+				<table border = 1>
+					<tr>
+						<td>ID</td><td>First Name</td><td>Last Name</td><td>State</td><td>Sales YTD</td><td>Previous Years Sales</td>
+					</tr>
+					{% for customer in result %}
+						<tr>
+							<td>{{ customer['cusId'] }}</td><td>{{ customer['cusFname'] }}</td><td>{{ customer['cusLname'] }}</td><td>{{ customer['cusState'] }}</td><td>{{ customer['cusSalesYTD'] }}</td><td>{{ customer['cusSalesPrev'] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% endif %}
+		{% endif %}
+		<br>
+		{% include 'footer.html' %}
+    </body>
+</html>

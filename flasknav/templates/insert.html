@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Insert Customer Record</title>
+</head>
+
+<body>
+    <form action="http://localhost:5000/insertresult" method="POST">
+        <p>Enter Customer Information</p>
+        <table>
+            <tr>
+                <td>ID
+                </td>
+                <td><input type="text" name="cusId" value="{{ customer['cusId'] }}" /></td>
+            </tr>
+            <tr>
+                <td>First Name
+                </td>
+                <td><input type="text" name="cusFname" value="{{ customer['cusFname'] }}" /></td>
+            </tr>
+            <tr>
+                <td>Last Name
+                </td>
+                <td><input type="text" name="cusLname" value="{{ customer['cusLname'] }}" /></td>
+            </tr>
+            <tr>
+                <td>State
+                </td>
+                <td><input type="text" name="cusState" value="{{ customer['cusState'] }}" /></td>
+            </tr>
+            <tr>
+                <td>Sales YTD
+                </td>
+                <td><input type="number" name="cusSalesYTD" value="{{ customer['cusSalesYTD'] }}" /></td>
+            </tr>
+            <tr>
+                <td>Previous Years Sales
+                </td>
+                <td><input type="number" name="cusSalesPrev" value="{{ customer['cusSalesPrev'] }}" /></td>
+            </tr>
+        </table>
+        <p><input type="submit" value="Insert Record" /> <input type="reset"></p>
+    </form>
+</body>
+
+</html>

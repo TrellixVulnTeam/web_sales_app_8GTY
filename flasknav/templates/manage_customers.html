@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Customer - Manage Customers</title>
+    </head>
+	<body>
+		{% include 'header.html' %}
+		<h1>
+		Find Customers
+		</h1>
+		Total number of records in the database: {{ totRec }}
+		<form action = "/customer" method="POST">
+			<table>
+				<tr>
+					<td>ID<td><td><input type="text" name="cusId" value="{{ customer['cusId'] }}" /> (equals)</td>
+				</tr>
+				<tr>
+					<td>First Name<td><td><input type="text" name="cusFname" value="{{ customer['cusFname'] }}" /> (begins with)</td>
+                </tr>
+                <tr>
+					<td>Last Name<td><td><input type="text" name="cusLname" value="{{ customer['cusLname'] }}" /> (begins with)</td>
+				</tr>
+				<tr>
+					<td>State<td><td><input type="text" name="cusState" value="{{ customer['cusState'] }}" /> (equals)</td>
+				</tr>
+				<tr>
+					<td>Sales YTD<td><td><input type="number" name="cusSalesYTD" value="{{ customer['cusSalesYTD'] }}" /> (greater than or equal to)</td>
+                </tr>
+                <tr>
+				<td>Previous Years Sales<td><td><input type="number" name="cusSalesPrev" value="{{ customer['cusSalesPrev'] }}" /> (greater than or equal to)</td>
+				</tr>
+			</table>
+			<br>
+            <input type="submit" value="Find"/> <input type="reset" value="Reset"/>			
+		</form>
+        <p><h3><a href="/newcustomer">Add New Customer Contact</a></h3></p>
+		{% if source == 'POST' %}
+			{% if cusRecords[0:5] == 'Error' %}
+				<h3>Error: </h3> {{ cusRecords }}
+			{% else %}
+				{% set numrecs = cusRecords|length %}
+				{% if numrecs == 0 %}
+					<h2>No results match search criteria!</h2>
+				{% else %}
+					<h2>Search Results</h2>
+					Number of records found: {{ numrecs }}
+					<table border = 1>
+						<tr>
+							<td>ID</td><td>First Name</td><td>Last Name</td><td>State</td><td>Sales YTD</td><td>Previous Years Sales</td>
+						</tr>
+						{% for customer in cusRecords %}
+							<tr>
+								<td>{{ customer['cusId'] }}</td><td>{{ customer['cusFname'] }}</td><td>{{ customer['cusLname'] }}</td><td>{{ customer['cusState'] }}</td><td>{{ customer['cusSalesYTD'] }}</td><td>{{ customer['cusSalesPrev'] }}</td>
+								<td><a href="/update/{{ customer['cusId'] }}">Edit</a> | <a href="/delete/{{ customer['cusId'] }}">Delete</a></td>
+							</tr>
+						{% endfor %}
+					</table>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+		{% include 'footer.html' %}
+	</body>
+</html>

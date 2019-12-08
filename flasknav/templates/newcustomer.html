@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Customer - Add New</title>
+    </head>
+	<body>
+		{% include 'header.html' %}
+		<h1>
+		Add New Customer
+		</h1>
+		
+		<form action = "/newcustomer" method="POST">
+			<table>
+				<tr>
+					<td>ID<td><td><input type="text" name="cusId" /> (Required)</td>
+				</tr>
+				<tr>
+					<td>First Name<td><td><input type="text" name="cusFname" /> (Required)</td>
+                </tr>
+                <tr>
+					<td>Last Name<td><td><input type="text" name="cusLname" /> (Required)</td>
+				</tr>
+				<tr>
+					<td>State<td><td><input type="text" name="cusState" /></td>
+				</tr>
+				<tr>
+					<td>Sales YTD<td><td><input type="number" name="cusSalesYTD" /></td>
+                </tr>
+                <tr>
+				<td>Previous Years Sales<td><td><input type="number" name="cusSalesPrev" /></td>
+				</tr>
+			</table>
+			<p><input type="submit" value="Add Customer"> <input type="reset" value="Reset">
+		
+		</form>
+        <font color="red"><h2><b>{{ message }}</b></h2></font>
+
+        {% if customer is defined %}
+            <table border = 1>
+            <tr>
+                <td>ID</td><td>First Name</td><td>Last Name</td><td>State</td><td>Sales YTD</td><td>Previous Years Sales</td>
+            </tr>
+            <tr>
+                <td>{{ customer['cusId'] }}</td><td>{{ customer['cusFname'] }}</td><td>{{ customer['cusLname'] }}</td><td>{{ customer['cusState'] }}</td><td>{{ customer['cusSalesYTD'] }}</td><td>{{ customer['cusSalesPrev'] }}</td>
+            </tr>
+            </table>
+        {% endif %}
+
+		{% include 'footer.html' %}
+    </body>
+</html>

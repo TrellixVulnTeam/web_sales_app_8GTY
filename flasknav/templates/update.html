@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Update Customer</title>		
+    </head>
+	<body>
+		{%include 'header.html'%}
+		{% if source == 'GET' %}
+			{# during get, used row_factory. So, retrieve first (only) record to set values of text inputs. 
+				This will match the dictionary from the form when a POST is used.
+			#}
+			{# the following helps to use the same form as long as you are consistent with variables #}
+			{% set customer = customer[0] %}
+		{% else %}		
+			{% if message[0:5] == 'Error' %}
+				<h3>Error: </h3> {{ message }}
+			{% endif %}
+		{% endif %}
+		
+		<h2>Update Customer </h2>
+		<form action = "/update/{{ customer['cusId'] }}" method="POST">
+			<table>
+				<tr>
+					<td>ID<td><td><input type="integer" name="cusId" value="{{ customer['cusId'] }}" readonly /> </td>
+				</tr>
+				<tr>
+					<td>First Name<td><td><input type="text" name="cusFname" value="{{ customer['cusFname'] }}" /> </td>
+				</tr>
+				<tr>
+					<td>Last Name<td><td><input type="text" name="cusLname" value="{{ customer['cusLname'] }}" /> </td>
+				</tr>
+				<tr>
+					<td>State<td><td><input type="text" name="cusState" value="{{ customer['cusState'] }}" /> </td>
+				</tr>
+				<tr>
+					<td>Sales YTD<td><td><input type="number" name="cusSalesYTD" value="{{ customer['cusSalesYTD'] }}" /> </td>
+				</tr>
+				<tr>
+					<td>Previous Years Sales<td><td><input type="number" name="cusSalesPrev" value="{{ customer['cusSalesPrev'] }}" /> </td>
+				</tr>
+			</table>
+			<p><input type="submit" value="Update Customer" /> <input type="reset" value="Reset">
+		</form>
+	
+		{% include 'footer.html' %}
+    </body>
+</html>

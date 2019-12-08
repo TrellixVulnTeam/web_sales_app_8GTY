@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov 24 21:36:42 2019
+
+@author: 014892317
+"""
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Message - Customer Sample Application</title>
+    </head>
+	<body>
+		{% include 'header.html' %}
+        <font color="red"><h2><b>{{ message }}</b></h2></font>
+
+
+		{% if customer is defined %}
+			<table border = 1>
+					<tr>
+						<td>ID</td><td>First Name</td><td>Last Name</td><td>State</td><td>Sales YTD</td><td>Previous Years Sales</td>
+					</tr>
+					<tr>
+						<td>{{ customer['cusId'] }}</td><td>{{ customer['cusFname'] }}</td><td>{{ customer['cusLname'] }}</td><td>{{ customer['cusState'] }}</td><td>{{ customer['cusSalesYTD'] }}</td><td>{{ customer['cusSalesPrev'] }}</td>
+						<td><a href="/update/{{ customer['cusId'] }}">Edit</a> | <a href="/delete/{{ customer['cusId'] }}">Delete</a></td>
+					</tr>
+			</table>
+		{% endif %}
+		{% include 'footer.html' %}
+    </body>
+</html>

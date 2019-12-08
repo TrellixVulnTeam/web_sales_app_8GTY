@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Customer Insert Results</title>
+   </head>
+   <body>
+      {% if status == 'Success' %}
+	    Customer record inserted successfully! <br />
+	  {% else %}
+	    Error in inserting customer record! <br />
+		Error: {{ status }} <br />  
+	  {% endif %}
+	  <p>
+	  Customer Record
+	  <table>
+	    <tr>
+			<td>ID</td><td>{{ rec[0] }}</td>
+		</tr>
+	    <tr>
+			<td>First Name</td><td>{{ rec[1] }}</td>
+        </tr>
+        <tr>
+            <td>Last Name</td><td>{{ rec[2] }}</td>
+        </tr>	    
+		<tr>
+			<td>State</td><td>{{ rec[3] }}</td>
+        </tr>
+        <tr>
+            <td>Sales YTD</td><td>{{ rec[4] }}</td>
+        </tr>	    
+		<tr>
+			<td>Previous Years Sales</td><td>{{ rec[5] }}</td>
+		</tr>
+	  </table>
+   </body>
+</html>
