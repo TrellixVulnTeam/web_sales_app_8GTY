@@ -151,12 +151,16 @@ def import_file():
         return render_template('import_file.html', totRec=totRec)
 
 
-
-
-
-@app.route('/export')
+@app.route('/export', methods=['POST', 'GET'])
 def export():
-    return render_template('export.html')
+    if request.method == 'POST':
+        filename = request.form.get("filename")
+        records_exported = dbtasks.export_file(filename)
+        totRec = dbtasks.totRecords()
+        return render_template('export.html', totRec=totRec, records_exported=records_exported)
+    else:
+        totRec = dbtasks.totRecords()
+        return render_template("export.html", totRec=totRec)
 
 
 @app.route('/reports', methods=['POST', 'GET'])

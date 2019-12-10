@@ -1,6 +1,5 @@
 import sqlite3
-import random
-from datetime import datetime
+import csv
 
 # Hard coded database name.  Real-world, use a config file
 dbname = 'customers.db'
@@ -194,34 +193,15 @@ def sql_insert_customer(collection, errfile):
 
     return totRecInserted
 
-##def insert_customer(collection):
-# No error file for this use case
-# Create connection, cursor, and execute insert statement
-# con = sqlite3.connect(dbname)
-# curs = con.cursor()
-# now = datetime.now()
-# myTimeStamp = now.strftime("%Y%m%d_%H%M%S")
-# Use exception handling
-# try:
-# curs.execute('INSERT INTO customer(cusId, cusFname, cusLname, cusState, cusSalesYTD, cusSalesPrev) VALUES(?, ?, ?, ?, ?, ?)', collection)
-# except sqlite3.IntegrityError:
-# print('Record already exists', collection)
-# with open('insert_error.txt', mode='a') as errorfile:
-# for item in collection:
-# print(item, end=' ', file=errorfile)
-# print(file=errorfile)
-# except Exception as e:
-# print('exception', str(e))
-# con.commit()
 
-# Loop through the records in the file and insert into the database
-# numRecs = 0
-# with open('txtfile', mode='r') as cusfile:
-# for record in cusfile:
-# numRecs += 1
-# rec = record.split()
-# sql_insert_customer(rec)
+def export_file(filename):
+    con = sqlite3.connect(dbname)
+    db_records = getCustomers()
+    totRec = totRecords()
 
-# print('number of records: ', numRecs)
-# Close database connection
-# con.close()
+    with open(filename, mode='w') as export_file:
+        export_writer = csv.writer(export_file, delimiter=' ')
+        for record in db_records:
+            export_writer.writerow(record)
+
+    return totRec

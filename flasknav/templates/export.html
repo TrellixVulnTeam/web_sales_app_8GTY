@@ -7,10 +7,15 @@
 		{% include 'header.html' %}
 		<h1>
 		Customer Export
-		<br>
-		Still need to create this
-		</h1>
-		<br>
+        </h1>
+        <p>Total number of records in the database: {{ totRec }}</p>
+        {% if records_exported is defined %}
+            <p>Total number of records exported: {{ records_exported }}</p>
+        {% endif %}
+        <form action="/export" method="POST">
+            <p>Enter file name (e.g. export.txt): <input type="text" name="filename"></p>
+            <input type="submit" value="Export"> <input type="reset" value="Reset">
+        </form>
 		{% include 'footer.html' %}
     </body>
 </html>
