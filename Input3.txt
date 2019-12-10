@@ -1,9 +1,0 @@
-124 Susie Strutts NV 1400 50
-125 Mark Maine NV 100 200
-126 Danielle Douglas CA 2200 100
-127 Danny Dirk AZ 0 0
-128 Adam Abernathy AZ 1700 0
-129 Eugene Ernest CA 1900 800
-130 Ernie Eon CA 3500 4000
-107 Patricia Pullman AZ 1000 1100
-116 Logan Landing NV 980 1100

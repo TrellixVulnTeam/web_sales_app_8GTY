@@ -1,7 +1,13 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request
 from flasknav import dbtasks
+from datetime import datetime
+import csv
+import os
+
+UPLOAD_FOLDER = os.getcwd() + "/uploads/"
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/testing', methods=['POST', 'GET'])
@@ -121,22 +127,31 @@ def newcustomer():
 # return (cusRecords) return render_template('manage_customers.html', totRec=totRec, customer=customer,
 # cusRecords=cusRecords, source=source)
 
-@app.route('/import')
-def Import():
+@app.route('/import_file', methods=['GET', 'POST'])
+def import_file():
+    if request.method == 'POST':
+        file = request.files['txtfile']
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        with open(app.config['UPLOAD_FOLDER'] + filename) as import_file:
+            collection = [tuple(line) for line in csv.reader(import_file, delimiter=" ")]
+
+        totRecProcessed = len(collection)
+        now = datetime.now().strftime("%Y%m%d_%H%M%S")
+        errfile = filename[: -4] + "_errors_" + now + ".txt"
+
+        totRecInserted = dbtasks.sql_insert_customer(collection, errfile)
+        totRec = dbtasks.totRecords()
+
+        return render_template("import_file.html", filename=filename, totRec=totRec,
+                               totRecProcessed=totRecProcessed, totRecInserted=totRecInserted)
+
     if request.method == 'GET':
         totRec = dbtasks.totRecords()
-        # Empty customers dictionary for GET
-        customer = {}
-        return render_template('import.html', totRec=totRec, customer=customer)
+        return render_template('import_file.html', totRec=totRec)
 
-    if request.method == 'POST':
-        source = 'POST'
-        totRec = dbtasks.totRecords()
-        customer = request.form
-        cusRecords = dbtasks.findCustomers(customer)
 
-        # return (cusRecords)
-    return render_template('import.html', totRec=totRec)
+
 
 
 @app.route('/export')
@@ -159,34 +174,34 @@ def reports():
         return render_template('reports.html', source=source, result=result)
 
 
-@app.route('/inputfilenames')
-def input_filenames():
-    return render_template('input_filenames.html')
+# @app.route('/inputfilenames')
+# def input_filenames():
+#     return render_template('input_filenames.html')
 
 
-@app.route('/result_fileprocess', methods=['POST', 'GET'])
-def result_fileprocess():
-    if request.method == 'POST':
-        files = request.form
-        txtfile = files['txtfile']
-        dbfile = files['dbfile']
-        errorfile = 'input_error.txt'
-        status = 'Success'
+# @app.route('/result_fileprocess', methods=['POST', 'GET'])
+# def result_fileprocess():
+#     if request.method == 'POST':
+#         files = request.form
+#         txtfile = files['txtfile']
+#         dbfile = files['dbfile']
+#         errorfile = 'input_error.txt'
+#         status = 'Success'
+#
+#         with open(txtfile, mode='r') as stufile:
+#             for record in stufile:
+#                 rec = record.split()
+#                 msg = sql_insert_customer(rec, errorfile)
+#                 if msg != 'Success':
+#                     status = msg
+#         return render_template('result_fileprocess.html', status=status, errorfile=errorfile)
 
-        with open(txtfile, mode='r') as stufile:
-            for record in stufile:
-                rec = record.split()
-                msg = sql_insert_customer(rec, errorfile)
-                if msg != 'Success':
-                    status = msg
-        return render_template('result_fileprocess.html', status=status, errorfile=errorfile)
 
-
-@app.route('/customerresult', methods=['POST', 'GET'])
-def customerresult():
-    if request.method == 'POST':
-        customer = request.form
-        return render_template("customerresult.html", customer=customer)
+# @app.route('/customerresult', methods=['POST', 'GET'])
+# def customerresult():
+#     if request.method == 'POST':
+#         customer = request.form
+#         return render_template("customerresult.html", customer=customer)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Customer Import</title>
+   </head>
+   <body>
+      {% include 'header.html' %}
+		<h1>
+		Customer Import
+		</h1>
+      <p>Total number of records in the database: {{ totRec }}</p>
+      {% if filename|length %}
+        <p>
+            File processed: {{ filename }}<br>
+            Total records processed: {{ totRecProcessed }}<br>
+            Total records inserted: {{ totRecInserted }}
+        </p>
+      {% endif %}
+      <form action = "/import_file" enctype=multipart/form-data method="POST">
+	   <table>
+		  <tr>
+		   <td>Source File:</td><td><input type = "file" name = "txtfile" /></td>
+		  </tr>
+		</table>
+		<p><input type = "submit" value = "import_file" /> <input type = "reset" value="Reset"></p>
+      </form>
+      {% include 'footer.html' %}
+   </body>
+</html>

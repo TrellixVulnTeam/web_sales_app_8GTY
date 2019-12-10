@@ -171,26 +171,28 @@ def reports(id):
     finally:
         con.close()
 
-    ##def sql_insert_customer(collection, errfile):
+
+def sql_insert_customer(collection, errfile):
     # Create cursor and execute insert statement
     con = sqlite3.connect(dbname)
     curs = con.cursor()
     # Use exception handling
-    try:
-        curs.execute(
-            'INSERT INTO customer(cusId, cusFname, cusLname, cusState, cusSalesYTD, cusSalesPrev) '
-            'VALUES(?, ?, ?, ?, ?, ?)', collection)
-    except sqlite3.IntegrityError as e:
-        with open(errfile, mode='a') as errorfile:
-            for item in collection:
-                print(item, end=' ', file=errorfile)
-            print(file=errorfile)
-        return 'Error' + str(e)
-    except Exception as e:
-        print('exception', str(e))
-        return 'Error' + str(e)
-    con.commit()
-    return 'Success'
+    totRecInserted = 0
+    for row in collection:
+        try:
+            curs.execute(
+                'INSERT INTO customer(cusId, cusFname, cusLname, cusState, cusSalesYTD, cusSalesPrev) '
+                'VALUES(?, ?, ?, ?, ?, ?)', row)
+            con.commit()
+            totRecInserted += 1
+        except sqlite3.IntegrityError as e:
+            with open(errfile, mode='a') as errorfile:
+                print(row, 'Error: ' + str(e), end='\n', file=errorfile)
+        except Exception as e:
+            print('exception', str(e))
+            return 'Error' + str(e)
+
+    return totRecInserted
 
 ##def insert_customer(collection):
 # No error file for this use case
